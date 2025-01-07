@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import '../assets/LaundryDetails.css'
+import Header from '../components/Header';
 
 // LaundryDetails Component
 const LaundryDetails = () => {
@@ -70,6 +71,13 @@ const LaundryDetails = () => {
   };
 
   return (
+
+    <div>
+
+    <Header /> {/* Render the Header component */}
+
+  <main>
+
     <div className="laundry-details">
       <h1>Laundry Service Details</h1>
 
@@ -172,6 +180,8 @@ const LaundryDetails = () => {
         ))}
       </div>
     </div>
+  </main>
+  </div>
   );
 };
 

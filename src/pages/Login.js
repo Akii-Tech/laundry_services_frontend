@@ -81,7 +81,11 @@ const Login = () => {
         <button type="submit" disabled={isLoading}>
           {isLoading ? 'Logging in...' : 'Login'}
         </button>
+        <p className="register-link">
+      Don't have an account? <a href="/register">Register here</a>
+    </p>
       </form>
+      
     </div>
   );
 };

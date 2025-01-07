@@ -48,13 +48,9 @@ const Laundry = () => {
   }
 
   return (
-
-    
-
     <div>
-      
       <h1>{service.name}</h1>
-      <img src={service.photo} alt={service.name} className="service-photo" />
+      <img src={service.photo} alt={service.name} className="service-photo"   style={{ maxWidth: '19%' }}  />
       <p><strong>Address:</strong> {service.address}</p>
       <p><strong>Price per Kg:</strong> {service.pricePerKg}</p>
       <p><strong>Description:</strong> {service.description}</p>

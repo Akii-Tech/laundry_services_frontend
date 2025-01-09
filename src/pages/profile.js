@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import '../assets/Profile.css'
 
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile'); // 'profile' | 'orders' | 'none'
@@ -30,49 +31,47 @@ const Profile = () => {
 
     <div>
 
-    <Header /> {/* Render the Header component */}
+      <Header/>
 
-  <main>
+      <main>
+        <div className="container">
+          <div className="profile-card">
+            <img src={user.photo} alt="Profile" className="profile-photo" />
+            <h2 className="name">{user.name}</h2>
+            <div className="buttons">
+              <button onClick={() => handleTabChange('profile')}>Profile Info</button>
+              <button onClick={() => handleTabChange('orders')}>Orders</button>
+              <button onClick={() => alert('Logged out!')}>Logout</button>
+            </div>
+          </div>
 
+          <div className="details-card">
+            {activeTab === 'profile' && (
+              <div className="profile-info">
+                <h3>Profile Info</h3>
+                <p><strong>Email:</strong> {user.profileInfo.email}</p>
+                <p><strong>Phone:</strong> {user.profileInfo.phone}</p>
+                <p><strong>Location:</strong> {user.profileInfo.location}</p>
+                <p><strong>Bio:</strong> {user.profileInfo.bio}</p>
+              </div>
+            )}
 
-    <div className="container">
-      <div className="profile-card">
-        <img src={user.photo} alt="Profile" className="profile-photo" />
-        <h2 className="name">{user.name}</h2>
-        <div className="buttons">
-          <button onClick={() => handleTabChange('profile')}>Profile Info</button>
-          <button onClick={() => handleTabChange('orders')}>Orders</button>
-          <button onClick={() => alert('Logged out!')}>Logout</button>
+            {activeTab === 'orders' && (
+              <div className="orders-info">
+                <h3>Orders</h3>
+                <ul>
+                  {user.orders.map((order) => (
+                    <li key={order.id}>
+                      {order.product} - {order.date}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-
-      <div className="details-card">
-        {activeTab === 'profile' && (
-          <div className="profile-info">
-            <h3>Profile Info</h3>
-            <p><strong>Email:</strong> {user.profileInfo.email}</p>
-            <p><strong>Phone:</strong> {user.profileInfo.phone}</p>
-            <p><strong>Location:</strong> {user.profileInfo.location}</p>
-            <p><strong>Bio:</strong> {user.profileInfo.bio}</p>
-          </div>
-        )}
-
-        {activeTab === 'orders' && (
-          <div className="orders-info">
-            <h3>Orders</h3>
-            <ul>
-              {user.orders.map((order) => (
-                <li key={order.id}>
-                  {order.product} - {order.date}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    </div>
-
-    </main>
+      </main>
+      <Footer />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import "../assets/RegistrationForm.css";
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 // Dummy data for laundry services
 const img = "https://media.gettyimages.com/id/1467054171/photo/front-view-of-laundry-building-exterior-with-laundry-machines-dryers-and-hanging-clothes.jpg?s=612x612&w=gi&k=20&c=L5hCbKJa345j-cOissm1X-SJn5V8FmNtxtU1knFCBQM="; // Placeholder image
@@ -39,6 +40,7 @@ const dummyData = [
 
 const LaundryList = () => {
   const [laundryServices] = useState(dummyData);
+  
 
   return (
     <div>
@@ -68,6 +70,7 @@ const LaundryList = () => {
           </div>
         </div>
       </main>
+      <Footer/>
     </div>
   );
 };

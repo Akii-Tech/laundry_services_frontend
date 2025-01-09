@@ -39,8 +39,10 @@ const Login = () => {
         // Redirect based on role
         if (role && role[0].role === 'ADMIN') {
           navigate('/admin-dashboard'); // Redirect to admin dashboard
-        } else {
+        } else if(role && role[0].role === 'USER'){
           navigate('/user-dashboard'); // Redirect to user dashboard
+        }else{
+          navigate('/laundry-list') // Redirect to enduser dashbord
         }
       }
     } catch (err) {

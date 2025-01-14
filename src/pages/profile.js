@@ -4,6 +4,8 @@ import '../assets/Profile.css'
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import LoginService from '../services/LoginService'
+
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile'); // 'profile' | 'orders' | 'none'
@@ -27,6 +29,15 @@ const Profile = () => {
     setActiveTab(tab);
   };
 
+  const handleLogout = async () => {
+    const success = await LoginService.logout();
+    if (success) {
+      window.location.href = '/login'; // Redirect to login page after successful logout
+    } else {
+      console.error('Logout failed');
+    }
+  };
+
   return (
 
     <div>
@@ -41,7 +52,7 @@ const Profile = () => {
             <div className="buttons">
               <button onClick={() => handleTabChange('profile')}>Profile Info</button>
               <button onClick={() => handleTabChange('orders')}>Orders</button>
-              <button onClick={() => alert('Logged out!')}>Logout</button>
+              <button onClick={handleLogout}>Logout</button>
             </div>
           </div>
 

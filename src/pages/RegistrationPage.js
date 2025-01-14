@@ -29,7 +29,7 @@ const RegistrationForm = () => {
             // Just print the form data to the console
             console.log(formData);
             alert('Form submitted, check the console!');
-            window.location.href = '/';
+            window.location.href = '/login';
         } catch (error) {
             console.error('Registration failed', error);
         }

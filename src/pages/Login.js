@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import '../assets/Login.CSS'; // Import the CSS file
+import LoginService from '../services/LoginService';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(); // Hook to handle redirection
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (username === '' || password === '') {
+    if (userName.trim() === '' || password.trim() === '') {
       setError('Please fill in both fields');
       return;
     }
@@ -23,71 +22,57 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      // Send POST request to the login API
-      const response = await axios.post('http://localhost:8082/login', {
-        username,
-        password
-      });
+      const data = await LoginService.login(userName, password);
 
-      // Handle successful login (response contains user data and token)
-      if (response.status === 200) {
-        const { role, token } = response.data;
+      // Extract details from the response
+      const { userId,role, token } = data;
 
-        // Store the token in localStorage (or sessionStorage for session-based login)
-        localStorage.setItem('token', token);
+      // Store the token
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
 
-        // Redirect based on role
-        if (role && role[0].role === 'ADMIN') {
-          navigate('/admin-dashboard'); // Redirect to admin dashboard
-        } else if(role && role[0].role === 'USER'){
-          navigate('/user-dashboard'); // Redirect to user dashboard
-        }else{
-          navigate('/laundry-list') // Redirect to enduser dashbord
+      if (role?.length) {
+        const userRole = role[0].role;
+        switch (userRole) {
+          case 'ROLE_ADMIN':
+            navigate('/admin-dashboard');
+            break;
+          case 'ROLE_USER':
+            navigate('/user-dashboard');
+            break;
+          default:
+            navigate('/laundry-list');
+            break;
         }
+      } else {
+        setError('No valid role found for the user.');
       }
-    } catch (err) {
-      // Handle errors (e.g., invalid credentials)
-      setError('Invalid credentials or something went wrong.');
+    } catch (errMessage) {
+      setError(errMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
+
   return (
     <div className="login-container">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <div className="input-container">
           <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
-            required
-          />
+          <input type="text" id="username" value={userName} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your username" required />
         </div>
         <div className="input-container">
           <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            required
-          />
+          <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" required/>
         </div>
         {error && <p className="error-message">{error}</p>}
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Login'}
-        </button>
+        <button type="submit" disabled={isLoading}> {isLoading ? 'Logging in...' : 'Login'} </button>
         <p className="register-link">
       Don't have an account? <a href="/register">Register here</a>
     </p>
-      </form>
-      
+      </form>      
     </div>
   );
 };

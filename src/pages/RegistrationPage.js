@@ -1,6 +1,7 @@
 //import React from "react";
 import React, { useState } from "react";
 import "../assets/RegistrationForm.css"
+import LoginService from "../services/LoginService";
 
 
 const RegistrationForm = () => {
@@ -26,10 +27,25 @@ const RegistrationForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+
+            const userDetails = {
+                firstName: formData.fname,
+                lastName: formData.lname,
+                userName: formData.username,
+                email: formData.email,
+                password: formData.password,
+                role: formData.userType,
+              };
             // Just print the form data to the console
             console.log(formData);
-            alert('Form submitted, check the console!');
-            window.location.href = '/login';
+            const result = await LoginService.register(userDetails);
+            console.log(result)
+            if (result) {
+                alert("Registration successful!");
+                window.location.href = '/login'; // Redirect to login page
+              } else {
+                //alert("Registration failed. Please try again.");
+              }
         } catch (error) {
             console.error('Registration failed', error);
         }
@@ -37,7 +53,7 @@ const RegistrationForm = () => {
 
     return (
             
-        <form onSubmit={handleSubmit}>
+        <form className="form" onSubmit={handleSubmit}>
           <input type="text" name="fname" value={formData.fname} onChange={handleChange} placeholder="First Name" />
           <input type="text" name="lname" value={formData.lname} onChange={handleChange} placeholder="Last Name" />
           <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Username" />

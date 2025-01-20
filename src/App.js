@@ -8,6 +8,8 @@ import LaundryDetails from './pages/LaundryDetails';
 import LaundryList from './pages/LaundryList';
 import Profile from './pages/profile';
 import Laundry from './pages/Laundry'
+import Booking from './pages/Booking';
+import BookingConfirmation from './pages/BookingConfirmation';
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
         <Route path='/laundry-list' element={<LaundryList/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path="/laundry/:id" element={< Laundry/>} />
+        <Route path="/booking/:serviceId" element={<Booking />} />
+        <Route path="/booking/confirmation" element={<BookingConfirmation />} />
       </Routes>
     </Router>
   );

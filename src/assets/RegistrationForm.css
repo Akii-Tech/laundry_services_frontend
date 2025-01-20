@@ -1,5 +1,5 @@
 /* RegistrationForm.css */
-form {
+.form {
     max-width: 400px;
     margin: 35px auto;
     padding: 20px;
@@ -109,3 +109,20 @@ h2 {
     text-decoration: none; /* Remove the underline */
     color: inherit; /* Optional: inherit the text color from its parent */
   }
+
+
+  .animate-image {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+}

@@ -1,61 +1,47 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import "../assets/RegistrationForm.css";
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-
-// Dummy data for laundry services
-const img = "https://media.gettyimages.com/id/1467054171/photo/front-view-of-laundry-building-exterior-with-laundry-machines-dryers-and-hanging-clothes.jpg?s=612x612&w=gi&k=20&c=L5hCbKJa345j-cOissm1X-SJn5V8FmNtxtU1knFCBQM="; // Placeholder image
-
-const dummyData = [
-  {
-    id: 1,
-    name: "Laundry Service 1",
-    address: "123 Main St, City",
-    pricePerKg: "$5",
-    photo: img
-  },
-  {
-    id: 2,
-    name: "Laundry Service 2",
-    address: "456 Elm St, City",
-    pricePerKg: "$7",
-    photo: img
-  },
-  {
-    id: 3,
-    name: "Laundry Service 3",
-    address: "789 Pine St, City",
-    pricePerKg: "$6",
-    photo: img
-  },
-  {
-    id: 4,
-    name: "Laundry Service 4",
-    address: "101 Oak St, City",
-    pricePerKg: "$8",
-    photo: img
-  },
-];
+import laundryService from '../services/laundryService';
 
 const LaundryList = () => {
-  const [laundryServices] = useState(dummyData);
-  
+  const [laundryServices, setLaundryServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const defaultImage = "https://media.gettyimages.com/id/1467054171/photo/front-view-of-laundry-building-exterior-with-laundry-machines-dryers-and-hanging-clothes.jpg?s=612x612&w=gi&k=20&c=L5hCbKJa345j-cOissm1X-SJn5V8FmNtxtU1knFCBQM=";
+
+  useEffect(() => {
+    const fetchLaundryServices = async () => {
+      try {
+        const response = await laundryService.getAllLaundry();
+        setLaundryServices(response); // Ensure response is in the expected format
+      } catch (err) {
+        setError("Failed to load laundry services. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLaundryServices();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div>
-      <Header /> {/* Render the Header component */}
+      <Header />
       <main>
         <div className="laundry-list">
           <h1>Laundry Services</h1>
 
-          {/* Loop through the laundry services and create a card for each */}
           <div className="service-cards">
             {laundryServices.map((service) => (
               <div className="service-card" key={service.id}>
-                <Link to={`/laundry/${service.id}`} className="service-link"> {/* Make it clickable */}
+                <Link to={`/laundry/${service.id}`} className="service-link">
                   <img
-                    src={service.photo}
+                    src={service.photo || defaultImage}
                     alt={service.name}
                     className="service-photo"
                   />
@@ -70,7 +56,7 @@ const LaundryList = () => {
           </div>
         </div>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
